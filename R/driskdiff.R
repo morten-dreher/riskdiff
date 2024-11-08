@@ -1,13 +1,16 @@
-driskdiff <- function(p0, p1, n0, n1) {
-  rds <- c()
-  probs <- c()
-  for(i in 0:n0) {
-    for(j in 0:n1) {
-      rds <- c(rds, (i*n1-j*n0)/(n0*n1))
-      probs <- c(probs, dbinom(x=i, size=n0, prob=p0)*dbinom(x=j, size=n1, prob=p1))
+#' Density of exact risk difference
+#'
+driskdiff <- function(piTreatment, piControl, nTreatment, nControl) {
+  riskDifference <- c()
+  probability <- c()
+  for(i in 0:nControl) {
+    for(j in 0:nTreatment) {
+      riskDifference <- c(riskDifference, (j*nControl-i*nTreatment)/(nControl*nTreatment))
+      probability <- c(probability, dbinom(x=i, size=nControl, prob=piControl)*dbinom(x=j, size=nTreatment, prob=piTreatment))
 
     }
   }
-  agg <- aggregate(probs, by=list(rds=rds), FUN=sum)
-  return(agg)
+  densities <- aggregate(probability, by=list(riskDifference=riskDifference), FUN=sum)
+  names(densities) <- c("Risk difference", "Probability")
+  return(densities)
 }

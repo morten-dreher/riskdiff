@@ -1,0 +1,133 @@
+---
+title: "Introduction to the riskdiff package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the riskdiff package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This document provides a brief introduction to discrete risk differences and to the R package `riskdiff`.
+First, load the package:
+
+```{r setup, eval = FALSE}
+library(riskdiff)
+```
+
+Presume that we perform a clinical trial with two groups and a binary endpoint. 
+This means the comparison of the two rates $\pi_t$ of the treatment group and $\pi_c$ of the control group.
+For illustration purposes, let $\pi_t$ and $\pi_c$ simply describe the rates of "treatment success" in the treatment and control group, respectively.
+In other words, the treatment with the higher rate is the favourable one for our example and we could formulate a null hypothesis as $H_0: \pi_t \leq \pi_c$.
+For large enough sample sizes $n_t$, $n_c$ of treatment and control group, we may use a normal approximation to answer the research question.
+However, for very small sample sizes, the approximation may be inadequate and one may be interested in exact results.
+The `riskdiff` package concerns itself with the (exact) distribution of risk differences and therefore, these will be described in detail here.
+Note that we can rewrite the above null hypothesis as $H_0: \pi_t \leq \pi_c \Leftrightarrow \Delta_\pi:= \pi_t - \pi_c \leq 0$, where $\Delta_\pi$ denotes the risk difference.
+
+While the risk difference is to be thought of as a real-valued number between 1 and -1, since it is simply defined by subtracting two rates, the risk difference observed in a clinical trial is in actuality a discrete random variable with a finite support.
+To illustrate this, presume that we perform an experiment with 4 patients in the treatment group and 3 patients in the control group (we note that such a trial will most likely not lead to significant results, but only serves for illustration purposes here).
+
+For independent patients and groups, we can describe the number of successes in each group using binomially distributed random variables $X_i$, where $i\in\{t,c\}$ denotes the respective group.
+Thus, $X_t \sim Bin(4, \pi_t)$ and $X_c\sim Bin(3, \pi_c)$ describe the number of successes in the treatment and control group, respectively.
+
+In both groups, the number of successes which we can observe is clearly finite (0, 1, 2, 3, 4 successes in the treatment group and 0, 1, 2, 3 successes in the control group), meaning the observed success rates are a discrete quantity (0/4, 1/4, 2/4, 3/4, 4/4 in the treatment group and 0/3, 1/3, 2/3, 3/3 in the control group). 
+Since the observed risk difference is just the difference of these discrete success rates, it is also a discrete quantity.
+The possible values it can take can be visualised in a table:
+
+&nbsp; | 0/4 | 1/4 | 2/4 | 3/4 | 4/4
+-- | -- | -- | -- | -- | --
+**0/3** | 0/12 | 3/12 | 6/12 | 9/12 | 12/12
+**1/3** | -4/12 | -1/12 | 2/12 | 5/12 | 8/12
+**2/3** | -8/12 | -5/12 | -2/12 | 1/12 | 4/12
+**3/3** | -12/12 | -9/12 | -6/12 | -3/12 | 0/12
+
+Each table entry is taken by subtracting the number of successes in the control group (displayed by the row names) from the number of successes in the treatment group (displayed by the column names).
+For ease of presentation, the common denominator 12 is used for all entries.
+
+From the table, two things become apparent:
+ 1) Not every value can be reached (e.g., a risk difference of 11/12 is not possible with the given sample sizes).
+ 2) Some values may occur more than once. For example, a risk difference of 0/12 can occur either if all patients experience a treatment success or if all patients experience a treatment failure. This phenomenon always occurs for a risk difference of 0, regardless of the sample sizes, and may also occur for other risk differences, if the group sizes are not coprime (consider group sizes 8 and 4, where a risk difference of 8/32 can be reached via 8/8 and 3/4 successes, 6/8 and 2/4 successes, 4/8 and 1/4 successes as well as 2/8 and 0/4 successes).
+
+Since the two groups and the patients within them are assumed to be independent, the probability of each risk difference in the table occurring is simply calculated by multiplying the marginal probabilities.
+Assuming the success probabilities $\pi_t = 0.6$ and $\pi_c=0.3$, the calculation of the probabilities is straightforward.
+For example, the probability of the observed risk difference being 12/12 is simply the probability of observing 4 successes in the treatment group times the probability of observing 0 successes in the control group:
+
+$$
+P(\Delta_\pi = 12/12) = P(X_t=4) \cdot P(X_c=0) = \binom{4}{4}0.6^4\cdot \binom{3}{0}(1-0.3)^3 = 0.0445.
+$$
+
+Completing the table yields:
+
+
+&nbsp; | 0/4 | 1/4 | 2/4 | 3/4 | 4/4
+-- | -- | -- | -- | -- | --
+**0/3** | 0.0088 | 0.0527 | 0.1185 | 0.1185 | 0.0445
+**1/3** | 0.0113 | 0.0677 | 0.1524 | 0.1524 | 0.0572
+**2/3** | 0.0048 | 0.0290 | 0.0653 | 0.0653 | 0.0245
+**3/3** | 0.0007 | 0.0041 | 0.0093 | 0.0093 | 0.0035
+
+Alternatively, we could calculate a scenario under our aforementioned null hypothesis, e.g. for equal success rates $\pi_t = \pi_c = 0.3$, equating to a risk difference $\Delta_\pi=0$.
+
+This yields the table:
+
+&nbsp; | 0/4 | 1/4 | 2/4 | 3/4 | 4/4
+-- | -- | -- | -- | -- | --
+**0/3** | 0.0824 | 0.1412 | 0.0908 | 0.0259 | 0.0028
+**1/3** | 0.1059 | 0.1815 | 0.1167 | 0.0333 | 0.0036
+**2/3** | 0.0454 | 0.0778 | 0.0500 | 0.0143 | 0.0015
+**3/3** | 0.0065 | 0.0111 | 0.0071 | 0.0020 | 0.0002
+
+
+We may summarise and order these probabilities by their risk differences.
+When summarising, we must keep in mind that, as mentioned above, a risk difference of 0 can be reached by two combinations (all successes or all failures).
+Accordingly, we must sum up both probabilities for the overall probability of a risk difference of 0.
+Note that this is not the only possible ordering, as we could also choose an ordering based on the probabilities alone.
+
+Risk difference | Probability
+-- | -- | -- 
+-12/12 | 0.0065
+-9/12 | 0.0111
+-8/12 | 0.0454
+-6/12 | 0.0071
+-5/12 | 0.0778 
+-4/12 | 0.1059  
+-3/12 | 0.0020
+-2/12 | 0.0500 
+-1/12 | 0.1815
+0/12 | 0.0826   
+1/12 | 0.0142 
+2/12 | 0.1167 
+3/12 | 0.1412 
+4/12 | 0.0015  
+5/12 | 0.0333 
+6/12 | 0.0908 
+8/12 | 0.0036 
+9/12 | 0.0259
+12/12 | 0.0028 
+
+
+Plotting the individual probabilities against the risk difference yields an interesting picture:
+
+```{r, fig.dim=c(8, 5)}
+rds <- c(c(12, 9, 8, 6, 5, 4, 3, 2, 1)/(-12), c(0, 1, 2, 3, 4, 5, 6, 8, 9, 12)/12)
+probs <- c(0.065,0.0111, 0.0454, 0.0071, 0.0778, 0.1059, 0.0020, 0.0500, 
+           0.1815, 0.0826, 0.0142, 0.1167, 0.1412, 0.0015, 0.0333, 0.0908, 
+           0.0036, 0.0259, 0.0028)
+
+plot(rds, probs, xlab = "Risk difference", ylab = "Probability", 
+     main = "Risk difference distribution under H0")
+lines(rds, probs)
+```
+
+Clearly, the distribution of the risk difference is not symmetric around 0 under $H_0$.
+Furthermore, the probability of observing a risk difference of 0 is rather low, compared to other values in the vicinity.
+The reasoning for this is intuitive, as for the given example of coprime sample sizes, a risk difference of 0 will only be achieved if a treatment success is observed for all patients or if a treatment failure is observed for all patients.
+With the assumed moderate success probability of $0.3$, neither of these events is overwhelmingly likely.
