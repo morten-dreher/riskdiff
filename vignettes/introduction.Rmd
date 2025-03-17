@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.dim = c(8,5)
 )
 ```
 
@@ -64,7 +65,7 @@ $$
 P(\Delta_\pi = 12/12) = P(X_t=4) \cdot P(X_c=0) = \binom{4}{4}0.6^4\cdot \binom{3}{0}(1-0.3)^3 = 0.0445.
 $$
 
-Completing the table yields:
+Completing the table yields the probabilities:
 
 
 &nbsp; | 0/4 | 1/4 | 2/4 | 3/4 | 4/4
@@ -76,7 +77,7 @@ Completing the table yields:
 
 Alternatively, we could calculate a scenario under our aforementioned null hypothesis, e.g. for equal success rates $\pi_t = \pi_c = 0.3$, equating to a risk difference $\Delta_\pi=0$.
 
-This yields the table:
+This yields the probability table:
 
 &nbsp; | 0/4 | 1/4 | 2/4 | 3/4 | 4/4
 -- | -- | -- | -- | -- | --
@@ -89,7 +90,9 @@ This yields the table:
 We may summarise and order these probabilities by their risk differences.
 When summarising, we must keep in mind that, as mentioned above, a risk difference of 0 can be reached by two combinations (all successes or all failures).
 Accordingly, we must sum up both probabilities for the overall probability of a risk difference of 0.
-Note that this is not the only possible ordering, as we could also choose an ordering based on the probabilities alone.
+However, note the vast differences of these probabilities: the probability of all failures is $0.0824$, whereas the probability of all successes is merely $0.0002$. 
+It may be questionable to treat these situations in the same way.
+Regardless, this is a feature that occurs when reducing the complexity of the investigated hypothesis from two dimensions ($\pi_t$ and $\pi_c$) to one dimension ($\Delta_\pi$).
 
 Risk difference | Probability
 -- | -- | -- 
@@ -118,7 +121,7 @@ Plotting the individual probabilities against the risk difference yields an inte
 
 ```{r, fig.dim=c(8, 5)}
 rds <- c(c(12, 9, 8, 6, 5, 4, 3, 2, 1)/(-12), c(0, 1, 2, 3, 4, 5, 6, 8, 9, 12)/12)
-probs <- c(0.065,0.0111, 0.0454, 0.0071, 0.0778, 0.1059, 0.0020, 0.0500, 
+probs <- c(0.0065,0.0111, 0.0454, 0.0071, 0.0778, 0.1059, 0.0020, 0.0500, 
            0.1815, 0.0826, 0.0142, 0.1167, 0.1412, 0.0015, 0.0333, 0.0908, 
            0.0036, 0.0259, 0.0028)
 
@@ -129,5 +132,97 @@ lines(rds, probs)
 
 Clearly, the distribution of the risk difference is not symmetric around 0 under $H_0$.
 Furthermore, the probability of observing a risk difference of 0 is rather low, compared to other values in the vicinity.
-The reasoning for this is intuitive, as for the given example of coprime sample sizes, a risk difference of 0 will only be achieved if a treatment success is observed for all patients or if a treatment failure is observed for all patients.
+The reasoning for this is intuitive, as for the given example of coprime sample sizes, a risk difference of 0 will only be achieved if a treatment success is observed for all patients in the trial or if a treatment failure is observed for all patients in the trial.
 With the assumed moderate success probability of $0.3$, neither of these events is overwhelmingly likely.
+
+Under $H_0$, the most likely risk difference to be observed is -1/12, with a probability of $0.1815$.
+We may also investigate the cumulative risk difference distribution under $H_0$ by simply using the cumulative sum of the probabilities:
+
+```{r, fig.dim = c(8, 5)}
+cumProbs <- cumsum(probs)
+
+plot(rds, cumProbs, xlab = "Risk difference", ylab = "Cumulative Probability", 
+     main = "Cumulative risk difference distribution under H0")
+lines(rds, cumProbs)
+abline(h = cumProbs[10], col = "red", lty = 2)
+abline(v = 0, col = "red", lty = 2)
+abline(h = 0.95, col = "blue", lty = 2)
+```
+
+As illustrated by the red lines, the risk difference 0 clearly does not constitute the centre of the distribution, as the probability to observe a risk difference of at most 0 exceeds 0.5, which would be expected for a symmetric distribution.
+
+```{r}
+rds[10]
+cumProbs[10]
+```
+
+We may design a simple (one-sided) level $\alpha$ statistical test for this situation by rejecting $H_0$ for risk differences with a cumulative probability that exceeds $1-\alpha$.
+We use $\alpha=0.05$ for illustration.
+Note that for the comparison, we must subtract the concrete probabilities of achieving the specific risk difference to maintain the $\alpha$ level.
+In the plot above, the blue horizontal line indicates the cumulative probability of 0.95.
+
+```{r}
+alpha <- 0.05
+rejectData <- data.frame(riskDifference = rds, cumulativeProbability = cumProbs,
+                         probGeq = 1 - cumProbs + probs,
+                         reject = 1 - cumProbs + probs < alpha)
+rejectData
+```
+
+In the data frame above, the column `probGeq` indicates the probability of achieving a risk difference greater or equal than the respective value.
+For a valid (discrete) $\alpha$ level test, we may only reject risk differences for which this probability is less than $\alpha$.
+Using $\alpha = 0.05$, $H_0$ can be rejected for risk differences of 0.66 or greater.
+The true type I error rate of this test is thus $0.0324$ and the resulting test will be conservative, which is not surprising for a discrete test.
+
+We may simulate:
+
+```{r}
+set.seed(4242)
+nSims <- 1000000
+
+successTreatment <- rbinom(nSims, 4, 0.3)
+successControl <- rbinom(nSims, 3, 0.3)
+
+riskDifferences <- successTreatment/4 - successControl/3
+
+reject <- riskDifferences > 0.5
+
+mean(reject)
+```
+
+The simulated and theoretical type I error rates are in good agreement.
+
+We will now attempt a power calculation and simulation for the same group sizes, but assuming the event rates $\pi_t = 0.6$ and $\pi_c = 0.3$.
+The `priskdiff()` and `driskdiff()` functions from the `riskdiff` facilitate the calculation and `plotriskdiff()` visualises the result:
+
+```{r, fig.dim = c(8,5)}
+probs <- riskdiff::driskdiff(nTreatment = 4, nControl = 3, piTreatment = 0.6, piControl = 0.3)
+cumProbs <- riskdiff::priskdiff(nTreatment = 4, nControl = 3, piTreatment = 0.6, piControl = 0.3)
+cumProbs
+riskdiff::plotriskdiff(cumProbs)
+```
+
+From above, we learned that our test rejects for risk differences of 0.66 or greater (or for risk differences truly greater than 0.5).
+We may now calculate the power of our test for this situation:
+
+```{r}
+rejectData <- cbind(cumProbs, probGeq = 1 - cumProbs[,2] + probs[,2])
+rejectData
+```
+
+According to this calculation, the probability of reaching or exceeding a risk difference of 0.66 is 0.22, which is the power in this scenario.
+
+We may simulate:
+
+```{r}
+successTreatment <- rbinom(nSims, 4, 0.6)
+successControl <- rbinom(nSims, 3, 0.3)
+
+riskDifferences <- successTreatment/4 - successControl/3
+
+reject <- riskDifferences > 0.5
+
+mean(reject)
+```
+
+Again, the simulated and theoretical power rates are almost identical.
