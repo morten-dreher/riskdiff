@@ -8,8 +8,8 @@
 <title>Introduction to the riskdiff package • riskdiff</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the riskdiff package">
 </head>
 <body>
@@ -199,7 +199,7 @@ the probability of observing 0 successes in the control group:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Δ</mi><mi>π</mi></msub><mo>=</mo><mn>12</mn><mi>/</mi><mn>12</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>t</mi></msub><mo>=</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>c</mi></msub><mo>=</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>4</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mn>0.6</mn><mn>4</mn></msup><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>3</mn><mn>0</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>0.3</mn><mo stretchy="true" form="postfix">)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>0.0445</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
 P(\Delta_\pi = 12/12) = P(X_t=4) \cdot P(X_c=0) = \binom{4}{4}0.6^4\cdot \binom{3}{0}(1-0.3)^3 = 0.0445.
 </annotation></semantics></math></p>
-<p>Completing the table yields:</p>
+<p>Completing the table yields the probabilities:</p>
 <table class="table">
 <thead><tr class="header">
 <th> </th>
@@ -249,7 +249,7 @@ null hypothesis, e.g. for equal success rates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.3</mn></mrow><annotation encoding="application/x-tex">\pi_t = \pi_c = 0.3</annotation></semantics></math>,
 equating to a risk difference
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Δ</mi><mi>π</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Delta_\pi=0</annotation></semantics></math>.</p>
-<p>This yields the table:</p>
+<p>This yields the probability table:</p>
 <table class="table">
 <thead><tr class="header">
 <th> </th>
@@ -299,8 +299,19 @@ differences. When summarising, we must keep in mind that, as mentioned
 above, a risk difference of 0 can be reached by two combinations (all
 successes or all failures). Accordingly, we must sum up both
 probabilities for the overall probability of a risk difference of 0.
-Note that this is not the only possible ordering, as we could also
-choose an ordering based on the probabilities alone.</p>
+However, note the vast differences of these probabilities: the
+probability of all failures is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0824</mn><annotation encoding="application/x-tex">0.0824</annotation></semantics></math>,
+whereas the probability of all successes is merely
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0002</mn><annotation encoding="application/x-tex">0.0002</annotation></semantics></math>.
+It may be questionable to treat these situations in the same way.
+Regardless, this is a feature that occurs when reducing the complexity
+of the investigated hypothesis from two dimensions
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>π</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\pi_t</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>π</mi><mi>c</mi></msub><annotation encoding="application/x-tex">\pi_c</annotation></semantics></math>)
+to one dimension
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>).</p>
 <table class="table">
 <thead><tr class="header">
 <th>Risk difference</th>
@@ -409,7 +420,7 @@ choose an ordering based on the probabilities alone.</p>
 yields an interesting picture:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="op">-</span><span class="fl">12</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">12</span><span class="op">)</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span></span>
-<span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.065</span>,<span class="fl">0.0111</span>, <span class="fl">0.0454</span>, <span class="fl">0.0071</span>, <span class="fl">0.0778</span>, <span class="fl">0.1059</span>, <span class="fl">0.0020</span>, <span class="fl">0.0500</span>, </span>
+<span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0065</span>,<span class="fl">0.0111</span>, <span class="fl">0.0454</span>, <span class="fl">0.0071</span>, <span class="fl">0.0778</span>, <span class="fl">0.1059</span>, <span class="fl">0.0020</span>, <span class="fl">0.0500</span>, </span>
 <span>           <span class="fl">0.1815</span>, <span class="fl">0.0826</span>, <span class="fl">0.0142</span>, <span class="fl">0.1167</span>, <span class="fl">0.1412</span>, <span class="fl">0.0015</span>, <span class="fl">0.0333</span>, <span class="fl">0.0908</span>, </span>
 <span>           <span class="fl">0.0036</span>, <span class="fl">0.0259</span>, <span class="fl">0.0028</span><span class="op">)</span></span>
 <span></span>
@@ -424,10 +435,186 @@ Furthermore, the probability of observing a risk difference of 0 is
 rather low, compared to other values in the vicinity. The reasoning for
 this is intuitive, as for the given example of coprime sample sizes, a
 risk difference of 0 will only be achieved if a treatment success is
-observed for all patients or if a treatment failure is observed for all
-patients. With the assumed moderate success probability of
+observed for all patients in the trial or if a treatment failure is
+observed for all patients in the trial. With the assumed moderate
+success probability of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.3</mn><annotation encoding="application/x-tex">0.3</annotation></semantics></math>,
 neither of these events is overwhelmingly likely.</p>
+<p>Under
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>,
+the most likely risk difference to be observed is -1/12, with a
+probability of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.1815</mn><annotation encoding="application/x-tex">0.1815</annotation></semantics></math>.
+We may also investigate the cumulative risk difference distribution
+under
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+by simply using the cumulative sum of the probabilities:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">probs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">cumProbs</span>, xlab <span class="op">=</span> <span class="st">"Risk difference"</span>, ylab <span class="op">=</span> <span class="st">"Cumulative Probability"</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Cumulative risk difference distribution under H0"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">cumProbs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0.95</span>, col <span class="op">=</span> <span class="st">"blue"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
+<p>As illustrated by the red lines, the risk difference 0 clearly does
+not constitute the centre of the distribution, as the probability to
+observe a risk difference of at most 0 exceeds 0.5, which would be
+expected for a symmetric distribution.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rds</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="va">cumProbs</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 0.5699</span></span></code></pre></div>
+<p>We may design a simple (one-sided) level
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+statistical test for this situation by rejecting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+for risk differences with a cumulative probability that exceeds
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1-\alpha</annotation></semantics></math>.
+We use
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha=0.05</annotation></semantics></math>
+for illustration. Note that for the comparison, we must subtract the
+concrete probabilities of achieving the specific risk difference to
+maintain the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+level. In the plot above, the blue horizontal line indicates the
+cumulative probability of 0.95.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>riskDifference <span class="op">=</span> <span class="va">rds</span>, cumulativeProbability <span class="op">=</span> <span class="va">cumProbs</span>,</span>
+<span>                         probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span> <span class="op">+</span> <span class="va">probs</span>,</span>
+<span>                         reject <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span> <span class="op">+</span> <span class="va">probs</span> <span class="op">&lt;</span> <span class="va">alpha</span><span class="op">)</span></span>
+<span><span class="va">rejectData</span></span>
+<span><span class="co">#&gt;    riskDifference cumulativeProbability probGeq reject</span></span>
+<span><span class="co">#&gt; 1     -1.00000000                0.0065  1.0000  FALSE</span></span>
+<span><span class="co">#&gt; 2     -0.75000000                0.0176  0.9935  FALSE</span></span>
+<span><span class="co">#&gt; 3     -0.66666667                0.0630  0.9824  FALSE</span></span>
+<span><span class="co">#&gt; 4     -0.50000000                0.0701  0.9370  FALSE</span></span>
+<span><span class="co">#&gt; 5     -0.41666667                0.1479  0.9299  FALSE</span></span>
+<span><span class="co">#&gt; 6     -0.33333333                0.2538  0.8521  FALSE</span></span>
+<span><span class="co">#&gt; 7     -0.25000000                0.2558  0.7462  FALSE</span></span>
+<span><span class="co">#&gt; 8     -0.16666667                0.3058  0.7442  FALSE</span></span>
+<span><span class="co">#&gt; 9     -0.08333333                0.4873  0.6942  FALSE</span></span>
+<span><span class="co">#&gt; 10     0.00000000                0.5699  0.5127  FALSE</span></span>
+<span><span class="co">#&gt; 11     0.08333333                0.5841  0.4301  FALSE</span></span>
+<span><span class="co">#&gt; 12     0.16666667                0.7008  0.4159  FALSE</span></span>
+<span><span class="co">#&gt; 13     0.25000000                0.8420  0.2992  FALSE</span></span>
+<span><span class="co">#&gt; 14     0.33333333                0.8435  0.1580  FALSE</span></span>
+<span><span class="co">#&gt; 15     0.41666667                0.8768  0.1565  FALSE</span></span>
+<span><span class="co">#&gt; 16     0.50000000                0.9676  0.1232  FALSE</span></span>
+<span><span class="co">#&gt; 17     0.66666667                0.9712  0.0324   TRUE</span></span>
+<span><span class="co">#&gt; 18     0.75000000                0.9971  0.0288   TRUE</span></span>
+<span><span class="co">#&gt; 19     1.00000000                0.9999  0.0029   TRUE</span></span></code></pre></div>
+<p>In the data frame above, the column <code>probGeq</code> indicates
+the probability of achieving a risk difference greater or equal than the
+respective value. For a valid (discrete)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+level test, we may only reject risk differences for which this
+probability is less than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>.
+Using
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.05</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+can be rejected for risk differences of 0.66 or greater. The true type I
+error rate of this test is thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0324</mn><annotation encoding="application/x-tex">0.0324</annotation></semantics></math>
+and the resulting test will be conservative, which is not surprising for
+a discrete test.</p>
+<p>We may simulate:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4242</span><span class="op">)</span></span>
+<span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">1000000</span></span>
+<span></span>
+<span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">4</span>, <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">3</span>, <span class="fl">0.3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">riskDifferences</span> <span class="op">&lt;-</span> <span class="va">successTreatment</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span> <span class="va">successControl</span><span class="op">/</span><span class="fl">3</span></span>
+<span></span>
+<span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="fl">0.5</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.032424</span></span></code></pre></div>
+<p>The simulated and theoretical type I error rates are in good
+agreement.</p>
+<p>We will now attempt a power calculation and simulation for the same
+group sizes, but assuming the event rates
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.6</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.6</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.3</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.3</annotation></semantics></math>.
+The <code><a href="../reference/priskdiff.html">priskdiff()</a></code> and <code><a href="../reference/driskdiff.html">driskdiff()</a></code> functions from
+the <code>riskdiff</code> facilitate the calculation and
+<code><a href="../reference/plotriskdiff.html">plotriskdiff()</a></code> visualises the result:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">4</span>, nControl <span class="op">=</span> <span class="fl">3</span>, piTreatment <span class="op">=</span> <span class="fl">0.6</span>, piControl <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">4</span>, nControl <span class="op">=</span> <span class="fl">3</span>, piTreatment <span class="op">=</span> <span class="fl">0.6</span>, piControl <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span></span>
+<span><span class="co">#&gt;    Risk difference Cumulative probability</span></span>
+<span><span class="co">#&gt; 1      -1.00000000              0.0006912</span></span>
+<span><span class="co">#&gt; 2      -0.75000000              0.0048384</span></span>
+<span><span class="co">#&gt; 3      -0.66666667              0.0096768</span></span>
+<span><span class="co">#&gt; 4      -0.50000000              0.0190080</span></span>
+<span><span class="co">#&gt; 5      -0.41666667              0.0480384</span></span>
+<span><span class="co">#&gt; 6      -0.33333333              0.0593280</span></span>
+<span><span class="co">#&gt; 7      -0.25000000              0.0686592</span></span>
+<span><span class="co">#&gt; 8      -0.16666667              0.1339776</span></span>
+<span><span class="co">#&gt; 9      -0.08333333              0.2017152</span></span>
+<span><span class="co">#&gt; 10      0.00000000              0.2139952</span></span>
+<span><span class="co">#&gt; 11      0.08333333              0.2793136</span></span>
+<span><span class="co">#&gt; 12      0.16666667              0.4317232</span></span>
+<span><span class="co">#&gt; 13      0.25000000              0.4844080</span></span>
+<span><span class="co">#&gt; 14      0.33333333              0.5089024</span></span>
+<span><span class="co">#&gt; 15      0.41666667              0.6613120</span></span>
+<span><span class="co">#&gt; 16      0.50000000              0.7798528</span></span>
+<span><span class="co">#&gt; 17      0.66666667              0.8370064</span></span>
+<span><span class="co">#&gt; 18      0.75000000              0.9555472</span></span>
+<span><span class="co">#&gt; 19      1.00000000              1.0000000</span></span>
+<span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">cumProbs</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<p>From above, we learned that our test rejects for risk differences of
+0.66 or greater (or for risk differences truly greater than 0.5). We may
+now calculate the power of our test for this situation:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">cumProbs</span>, probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">rejectData</span></span>
+<span><span class="co">#&gt;    Risk difference Cumulative probability   probGeq</span></span>
+<span><span class="co">#&gt; 1      -1.00000000              0.0006912 1.0000000</span></span>
+<span><span class="co">#&gt; 2      -0.75000000              0.0048384 0.9993088</span></span>
+<span><span class="co">#&gt; 3      -0.66666667              0.0096768 0.9951616</span></span>
+<span><span class="co">#&gt; 4      -0.50000000              0.0190080 0.9903232</span></span>
+<span><span class="co">#&gt; 5      -0.41666667              0.0480384 0.9809920</span></span>
+<span><span class="co">#&gt; 6      -0.33333333              0.0593280 0.9519616</span></span>
+<span><span class="co">#&gt; 7      -0.25000000              0.0686592 0.9406720</span></span>
+<span><span class="co">#&gt; 8      -0.16666667              0.1339776 0.9313408</span></span>
+<span><span class="co">#&gt; 9      -0.08333333              0.2017152 0.8660224</span></span>
+<span><span class="co">#&gt; 10      0.00000000              0.2139952 0.7982848</span></span>
+<span><span class="co">#&gt; 11      0.08333333              0.2793136 0.7860048</span></span>
+<span><span class="co">#&gt; 12      0.16666667              0.4317232 0.7206864</span></span>
+<span><span class="co">#&gt; 13      0.25000000              0.4844080 0.5682768</span></span>
+<span><span class="co">#&gt; 14      0.33333333              0.5089024 0.5155920</span></span>
+<span><span class="co">#&gt; 15      0.41666667              0.6613120 0.4910976</span></span>
+<span><span class="co">#&gt; 16      0.50000000              0.7798528 0.3386880</span></span>
+<span><span class="co">#&gt; 17      0.66666667              0.8370064 0.2201472</span></span>
+<span><span class="co">#&gt; 18      0.75000000              0.9555472 0.1629936</span></span>
+<span><span class="co">#&gt; 19      1.00000000              1.0000000 0.0444528</span></span></code></pre></div>
+<p>According to this calculation, the probability of reaching or
+exceeding a risk difference of 0.66 is 0.22, which is the power in this
+scenario.</p>
+<p>We may simulate:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">4</span>, <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">3</span>, <span class="fl">0.3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">riskDifferences</span> <span class="op">&lt;-</span> <span class="va">successTreatment</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span> <span class="va">successControl</span><span class="op">/</span><span class="fl">3</span></span>
+<span></span>
+<span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="fl">0.5</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.219335</span></span></code></pre></div>
+<p>Again, the simulated and theoretical power rates are almost
+identical.</p>
 </div>
   </main>
 </div>
