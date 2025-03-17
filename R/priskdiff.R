@@ -1,4 +1,13 @@
 #' Distribution function of exact risk difference
+#'
+#' @param piTreatment Event rate in treatment group.
+#' @param piControl Event rate in control group.
+#' @param nTreatment Number of subjects in treatment group.
+#' @param nControl Number of subjects in control group.
+#'
+#' @return Aggregated data of risk differences and cumulative probabilities.
+#'
+#' @export
 priskdiff <- function(piTreatment, piControl, nTreatment, nControl) {
   riskDifference <- c()
   probability <- c()
