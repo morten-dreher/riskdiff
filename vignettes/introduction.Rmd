@@ -24,6 +24,8 @@ First, load the package:
 library(riskdiff)
 ```
 
+# Exact risk differences
+
 Presume that we perform a clinical trial with two groups and a binary endpoint. 
 This means the comparison of the two rates $\pi_t$ of the treatment group and $\pi_c$ of the control group.
 For illustration purposes, let $\pi_t$ and $\pi_c$ simply describe the rates of "treatment success" in the treatment and control group, respectively.
@@ -172,12 +174,11 @@ rejectData
 In the data frame above, the column `probGeq` indicates the probability of achieving a risk difference greater or equal than the respective value.
 For a valid (discrete) $\alpha$ level test, we may only reject risk differences for which this probability is less than $\alpha$.
 Using $\alpha = 0.05$, $H_0$ can be rejected for risk differences of 0.66 or greater.
-The true type I error rate of this test is thus $0.0324$ and the resulting test will be conservative, which is not surprising for a discrete test.
+The true type I error rate of this test is thus $0.0324$ and the resulting test will be conservative, which is not surprising given its discrete nature.
 
 We may simulate:
 
 ```{r}
-set.seed(4242)
 nSims <- 1000000
 
 successTreatment <- rbinom(nSims, 4, 0.3)
@@ -192,6 +193,7 @@ mean(reject)
 
 The simulated and theoretical type I error rates are in good agreement.
 
+
 We will now attempt a power calculation and simulation for the same group sizes, but assuming the event rates $\pi_t = 0.6$ and $\pi_c = 0.3$.
 The `priskdiff()` and `driskdiff()` functions from the `riskdiff` facilitate the calculation and `plotriskdiff()` visualises the result:
 
@@ -202,7 +204,8 @@ cumProbs
 riskdiff::plotriskdiff(cumProbs)
 ```
 
-From above, we learned that our test rejects for risk differences of 0.66 or greater (or for risk differences truly greater than 0.5).
+From above, we learned that our test rejects for risk differences of 0.66 or greater (or identically for risk differences truly greater than 0.5).
+We will generally use the "truly greater than" rejection rule rather than the "greater or equal" rule to avoid possible numerical inaccuracies.
 We may now calculate the power of our test for this situation:
 
 ```{r}
@@ -226,3 +229,290 @@ mean(reject)
 ```
 
 Again, the simulated and theoretical power rates are almost identical.
+
+We can compare this power value to that of Fisher's exact test:
+
+```{r}
+fisherReject <- numeric(1e4) # Using fewer iterations
+
+for(i in 1:length(fisherReject)) {
+  fisherReject[i] <- fisher.test(matrix(c(successTreatment[i], 4 - successTreatment[i], 
+                                         successControl[i], 3 - successControl[i]), nrow = 2),
+                                 alternative = "greater")$p.value < 0.05
+}
+mean(fisherReject)
+```
+
+We shall now move on to a more realistic trial scenario.
+
+# Departure from tiny sample sizes
+
+In the previous example, we used very small sample sizes of 4 and 3 patients in the treatment and control group, respectively.
+Apart from very early phase testing (in which the focus usually does not lie upon achieving statistical significance), such trial sizes are quite uncommon in practice.
+
+Let us instead focus on a trial with slightly larger, but still relatively small sample sizes.
+In a rare disease setting, we may consider a trial with 38 patients in the treatment group and 23 patients in the control group.
+These numbers may seem odd, but could very well be the result of a trial attempting to recruit "less odd" numbers, say, 35 and 25 patients per group.
+The imbalance between the treatment groups does lower the statistical power, but may not be uncommon in rare diseases in order to improve recruitment.
+We will assume a control rate of $\pi_c = 0.2$ and use the null hypothesis $H_0: \Delta_\pi \leq 0$.
+
+Calculating the distribution of the risk difference under $H_0$ is more computationally challenging now, since there are far more possible risk differences:
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 38, nControl = 23, piTreatment = 0.2, piControl = 0.2)
+riskdiff::plotriskdiff(probs)
+
+cumProbs <- riskdiff::priskdiff(nTreatment = 38, nControl = 23, piTreatment = 0.2, piControl = 0.2)
+riskdiff::plotriskdiff(cumProbs)
+```
+
+The risk difference plots are now messier, but hint at a roughly symmetric distribution around 0.
+Formulating a statistical test can be done in the same manner as before:
+
+```{r}
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2],
+                    reject = 1 - cumProbs[, 2] + probs[,2] < alpha)
+# Save for later
+rejectionRegion <- rejectData[, 4]
+rejectData[605:610, ]
+```
+
+For this setting, we may reject risk differences of 0.1693 or greater at a level of $\alpha = 0.05$.
+The true type I error rate of this test is $0.0493$, which is much closer to the nominal level $\alpha = 0.05$.
+
+We may again simulate the type I error rate of this trial:
+
+```{r}
+successTreatment <- rbinom(nSims, 38, 0.2)
+successControl <- rbinom(nSims, 23, 0.2)
+
+riskDifferences <- successTreatment/38 - successControl/23
+reject <- riskDifferences > rejectData[607, 1]
+
+mean(reject)
+```
+
+The simulated and theoretical type I error rates are in good agreement.
+
+For a power simulation, we will consider the point alternative $\pi_t = 0.4$ and $\pi_c = 0.2$:
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 38, nControl = 23, piTreatment = 0.4, piControl = 0.2)
+cumProbs <- riskdiff::priskdiff(nTreatment = 38, nControl = 23, piTreatment = 0.4, piControl = 0.2)
+
+# Power calculation
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2], 
+                    "reject" = rejectionRegion)
+
+rejectData[605:610, ]
+```
+
+The theoretical power for this test given the scenario is 0.606.
+
+We simulate:
+
+```{r}
+successTreatment <- rbinom(nSims, 38, 0.4)
+successControl <- rbinom(nSims, 23, 0.2)
+
+riskDifferences <- successTreatment/38 - successControl/23
+reject <- riskDifferences > rejectData[607, 1]
+
+mean(reject)
+```
+
+Again, the simulated power is almost identical to the theoretical power.
+
+An interesting (yet suspicious) observation is that this power is remarkably larger than the one achieved by working with a normal approximation, for example the one implemented in the `rpact` package:
+
+```{r}
+powerRates <- rpact::getPowerRates(
+  pi1 = 0.4, pi2 = 0.2, maxNumberOfSubjects = 38+23, allocationRatioPlanned = 38/23,
+  alpha = 0.05
+)
+
+summary(powerRates)
+```
+
+Perhaps this stems from an inaccuracy of the normal approximation in this case, as especially the control group has a small sample size and small event rate.
+
+We may compare the two tests for different treatment success rates:
+```{r, cache = TRUE}
+piTreatment <- seq(0.2, 0.4, 0.01)
+powerERD <- numeric(length(piTreatment))
+
+for(i in 1:length(piTreatment)) {
+  probs <- riskdiff::driskdiff(nTreatment = 38, nControl = 23, piTreatment = piTreatment[i], piControl = 0.2)
+  cumProbs <- riskdiff::priskdiff(nTreatment = 38, nControl = 23, piTreatment = piTreatment[i], piControl = 0.2)
+  
+  rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                      "Cumulative probability" = cumProbs[,2],
+                      probGeq = 1 - cumProbs[,2] + probs[,2], 
+                      "reject" = rejectionRegion)
+  
+  powerERD[i] <- rejectData[608, 3]
+}
+
+powerRpact <- rpact::getPowerRates(
+  pi1 = piTreatment, pi2 = 0.2, maxNumberOfSubjects = 38+23, 
+  allocationRatioPlanned = 38/23, alpha = 0.05
+)$overallReject
+```
+
+
+```{r}
+ggplot2::ggplot(data.frame(piTreatment = piTreatment, powerERD = powerERD, powerRpact = powerRpact)) +
+  ggplot2::geom_line(ggplot2::aes(x = piTreatment, y = powerERD), col = "blue") +
+  ggplot2::geom_line(ggplot2::aes(x = piTreatment, y = powerRpact), col = "red") +
+  ggplot2::labs(x = "Treatment success rate", y = "Power", title = "Power of exact risk difference test and normal approximation")
+```
+
+```{r}
+powerERD - powerRpact
+summary(powerERD - powerRpact)
+```
+
+For larger effect sizes, the exact risk difference test offers a larger power than the normal approximation.
+This advantage becomes remarkable for large effect sizes.
+
+
+# Arrival at larger sample sizes
+
+When entering the territory of large sample sizes, the normal approximation becomes more accurate.
+Consider a trial with 200 patients each in the treatment and control group and event rates of 0.2 under $H_0$.
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.2, piControl = 0.2)
+cumProbs <- riskdiff::priskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.2, piControl = 0.2)
+```
+
+The exact risk difference test at $\alpha = 0.05$ proposes the following rejection region:
+
+```{r}
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2],
+                    reject = 1 - cumProbs[, 2] + probs[,2] < alpha)
+# Save for later
+rejectionRegion <- rejectData[, 4]
+
+rejectData[213:217,]
+
+```
+
+Power calculation for the point alternative $\pi_t = 0.4$ and $\pi_c = 0.2$ yields:
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.4, piControl = 0.2)
+cumProbs <- riskdiff::priskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.4, piControl = 0.2)
+
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2], 
+                    "reject" = rejectionRegion)
+rejectData[c(213:217, length(rejectData[,1])),]
+```
+
+Comparing to the normal approximation:
+```{r}
+rpact::getPowerRates(
+  pi1 = 0.4, pi2 = 0.2, maxNumberOfSubjects = 200+200, 
+  allocationRatioPlanned = 1, alpha = 0.05
+) |> summary()
+```
+
+Comparing the two tests in this setting, the exact risk difference test delivers a marginally larger power, however, this is not relevant for any practical purposes. 
+Notably, the efficacy boundary on the treatment scale of the `rpact` output is identical to the one proposed by the exact risk difference test.
+
+
+Using a slightly smaller alternative effect size of $\pi_t = 0.3$ and $\pi_c = 0.2$:
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.3, piControl = 0.2)
+cumProbs <- riskdiff::priskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.3, piControl = 0.2)
+
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2], 
+                    "reject" = rejectionRegion)
+rejectData[213:217,]
+```
+
+Comparing to the normal approximation:
+```{r}
+rpact::getPowerRates(
+  pi1 = 0.3, pi2 = 0.2, maxNumberOfSubjects = 200+200, 
+  allocationRatioPlanned = 1, alpha = 0.05
+) |> summary()
+```
+
+In this case, the additional power that the exact risk difference provides is already considerable.
+Moving to an even smaller effect size of $\pi_t = 0.25$ and $\pi_c = 0.2$:
+
+```{r}
+probs <- riskdiff::driskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.25, piControl = 0.2)
+cumProbs <- riskdiff::priskdiff(nTreatment = 200, nControl = 200, piTreatment = 0.25, piControl = 0.2)
+
+rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                    "Cumulative probability" = cumProbs[,2],
+                    probGeq = 1 - cumProbs[,2] + probs[,2], 
+                    "reject" = rejectionRegion)
+
+rejectData[213:217,]
+```
+
+Comparing to the normal approximation:
+
+```{r}
+rpact::getPowerRates(
+  pi1 = 0.25, pi2 = 0.2, maxNumberOfSubjects = 200+200, 
+  allocationRatioPlanned = 1, alpha = 0.05
+) |> summary()
+```
+
+The power difference is now less pronounced, but still favours the exact risk difference test.
+
+Comparing the power of the exact risk difference test and the normal approximation for different treatment success rates:
+
+```{r, cache = TRUE}
+piTreatment <- seq(0.2, 0.4, 0.01)
+powerERD <- numeric(length(piTreatment))
+
+for(i in 1:length(piTreatment)) {
+  probs <- riskdiff::driskdiff(nTreatment = 200, nControl = 200, piTreatment = piTreatment[i], piControl = 0.2)
+  cumProbs <- riskdiff::priskdiff(nTreatment = 200, nControl = 200, piTreatment = piTreatment[i], piControl = 0.2)
+  
+  rejectData <- cbind("Risk difference" = cumProbs[,1], 
+                      "Cumulative probability" = cumProbs[,2],
+                      probGeq = 1 - cumProbs[,2] + probs[,2], 
+                      "reject" = rejectionRegion)
+  
+  powerERD[i] <- rejectData[215, 3]
+}
+
+powerRpact <- rpact::getPowerRates(
+  pi1 = piTreatment, pi2 = 0.2, maxNumberOfSubjects = 200+200, 
+  allocationRatioPlanned = 1, alpha = 0.05
+)$overallReject
+```
+
+
+```{r}
+ggplot2::ggplot(data.frame(piTreatment = piTreatment, powerERD = powerERD, powerRpact = powerRpact)) +
+  ggplot2::geom_line(ggplot2::aes(x = piTreatment, y = powerERD), col = "blue") +
+  ggplot2::geom_line(ggplot2::aes(x = piTreatment, y = powerRpact), col = "red") +
+  ggplot2::labs(x = "Treatment success rate", y = "Power", title = "Power of exact risk difference test and normal approximation")
+```
+
+```{r}
+powerERD - powerRpact
+summary(powerERD - powerRpact)
+```
+
+We note that for small treatment effect differences that are close to or part of the null hypothesis, the exact risk difference offers a slightly smaller power than the normal approximation.
+However, this is to be expected, as the normal approximation can always exhaust the full alpha level, where as the exact risk difference test is slightly overconservative in these cases.
+For larger effect sizes, the exact risk difference test offers a larger power than the normal approximation, but the gains in power are fairly small.
