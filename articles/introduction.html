@@ -71,6 +71,10 @@ differences and to the R package <code>riskdiff</code>. First, load the
 package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">riskdiff</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="exact-risk-differences">Exact risk differences<a class="anchor" aria-label="anchor" href="#exact-risk-differences"></a>
+</h2>
 <p>Presume that we perform a clinical trial with two groups and a binary
 endpoint. This means the comparison of the two rates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>π</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\pi_t</annotation></semantics></math>
@@ -427,7 +431,7 @@ yields an interesting picture:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">probs</span>, xlab <span class="op">=</span> <span class="st">"Risk difference"</span>, ylab <span class="op">=</span> <span class="st">"Probability"</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Risk difference distribution under H0"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">probs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_driskdiffs-1.png" width="768"></p>
 <p>Clearly, the distribution of the risk difference is not symmetric
 around 0 under
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
@@ -458,7 +462,7 @@ by simply using the cumulative sum of the probabilities:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0.95</span>, col <span class="op">=</span> <span class="st">"blue"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiffs-1.png" width="768"></p>
 <p>As illustrated by the red lines, the risk difference 0 clearly does
 not constitute the centre of the distribution, as the probability to
 observe a risk difference of at most 0 exceeds 0.5, which would be
@@ -521,12 +525,11 @@ Using
 can be rejected for risk differences of 0.66 or greater. The true type I
 error rate of this test is thus
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0324</mn><annotation encoding="application/x-tex">0.0324</annotation></semantics></math>
-and the resulting test will be conservative, which is not surprising for
-a discrete test.</p>
+and the resulting test will be conservative, which is not surprising
+given its discrete nature.</p>
 <p>We may simulate:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4242</span><span class="op">)</span></span>
-<span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">1000000</span></span>
+<code class="sourceCode R"><span><span class="va">nSims</span> <span class="op">&lt;-</span> <span class="fl">1000000</span></span>
 <span></span>
 <span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">4</span>, <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">3</span>, <span class="fl">0.3</span><span class="op">)</span></span>
@@ -536,7 +539,7 @@ a discrete test.</p>
 <span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="fl">0.5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.032424</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.032464</span></span></code></pre></div>
 <p>The simulated and theoretical type I error rates are in good
 agreement.</p>
 <p>We will now attempt a power calculation and simulation for the same
@@ -572,10 +575,13 @@ the <code>riskdiff</code> facilitate the calculation and
 <span><span class="co">#&gt; 18      0.75000000              0.9555472</span></span>
 <span><span class="co">#&gt; 19      1.00000000              1.0000000</span></span>
 <span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">cumProbs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiff_power-1.png" width="768"></p>
 <p>From above, we learned that our test rejects for risk differences of
-0.66 or greater (or for risk differences truly greater than 0.5). We may
-now calculate the power of our test for this situation:</p>
+0.66 or greater (or identically for risk differences truly greater than
+0.5). We will generally use the “truly greater than” rejection rule
+rather than the “greater or equal” rule to avoid possible numerical
+inaccuracies. We may now calculate the power of our test for this
+situation:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">cumProbs</span>, probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">rejectData</span></span>
@@ -612,11 +618,559 @@ scenario.</p>
 <span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="fl">0.5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.219335</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.219818</span></span></code></pre></div>
 <p>Again, the simulated and theoretical power rates are almost
 identical.</p>
+<p>We shall now move on to a more realistic trial scenario.</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="departure-from-tiny-sample-sizes">Departure from tiny sample sizes<a class="anchor" aria-label="anchor" href="#departure-from-tiny-sample-sizes"></a>
+</h2>
+<p>In the previous example, we used very small sample sizes of 4 and 3
+patients in the treatment and control group, respectively. Apart from
+very early phase testing (in which the focus usually does not lie upon
+achieving statistical significance), such trial sizes are uncommon in
+practice.</p>
+<p>Let us instead focus on a trial with slightly larger, but still
+relatively small sample sizes. In a rare disease setting, we may
+consider a trial with 38 patients in the treatment group and 23 patients
+in the control group. The imbalance between the treatment groups does
+lower the statistical power, but may not be uncommon in rare diseases in
+order to improve recruitment. We will assume a control rate of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>
+and use the null hypothesis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>Δ</mi><mi>π</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \Delta_\pi \leq 0</annotation></semantics></math>.</p>
+<p>Calculating the distribution of the risk difference under
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+is more computationally challenging now, since there are far more
+possible risk differences:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">probs</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/plot_priskdiff_2-1.png" width="768"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">cumProbs</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/plot_priskdiff_2-2.png" width="768"></p>
+<p>The risk difference plots are now messier, but hint at a roughly
+symmetric distribution around 0. Formulating a statistical test can be
+done in the same manner as before:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    reject <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">alpha</span><span class="op">)</span></span>
+<span><span class="co"># Save for later</span></span>
+<span><span class="va">rejectionRegion</span> <span class="op">&lt;-</span> <span class="va">rejectData</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">605</span><span class="op">:</span><span class="fl">610</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability    probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]       0.1647597              0.9420064 0.05799357      0</span></span>
+<span><span class="co">#&gt; [2,]       0.1670481              0.9472668 0.05799357      0</span></span>
+<span><span class="co">#&gt; [3,]       0.1681922              0.9506886 0.05273319      0</span></span>
+<span><span class="co">#&gt; [4,]       0.1693364              0.9506976 0.04931141      1</span></span>
+<span><span class="co">#&gt; [5,]       0.1704805              0.9506976 0.04930245      1</span></span>
+<span><span class="co">#&gt; [6,]       0.1716247              0.9506976 0.04930245      1</span></span></code></pre></div>
+<p>For this setting, we may reject risk differences of 0.1693 or greater
+at a level of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.05</annotation></semantics></math>.
+The true type I error rate of this test is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0493</mn><annotation encoding="application/x-tex">0.0493</annotation></semantics></math>,
+which is much closer to the nominal level
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.05</annotation></semantics></math>.</p>
+<p>We may again simulate the type I error rate of this trial:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">38</span>, <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">23</span>, <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">riskDifferences</span> <span class="op">&lt;-</span> <span class="va">successTreatment</span><span class="op">/</span><span class="fl">38</span> <span class="op">-</span> <span class="va">successControl</span><span class="op">/</span><span class="fl">23</span></span>
+<span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="va">rejectData</span><span class="op">[</span><span class="fl">607</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.049611</span></span></code></pre></div>
+<p>The simulated and theoretical type I error rates are in good
+agreement.</p>
+<p>For a power simulation, we will consider the point alternative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.4</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.4</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.4</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Power calculation</span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">605</span><span class="op">:</span><span class="fl">610</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability   probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]       0.1647597              0.3722905 0.6277095      0</span></span>
+<span><span class="co">#&gt; [2,]       0.1670481              0.3725310 0.6277095      0</span></span>
+<span><span class="co">#&gt; [3,]       0.1681922              0.3936257 0.6274690      0</span></span>
+<span><span class="co">#&gt; [4,]       0.1693364              0.4010774 0.6063743      1</span></span>
+<span><span class="co">#&gt; [5,]       0.1704805              0.4011103 0.5989226      1</span></span>
+<span><span class="co">#&gt; [6,]       0.1716247              0.4011103 0.5988897      1</span></span></code></pre></div>
+<p>The theoretical power for this test given the scenario is 0.606.</p>
+<p>We simulate:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">38</span>, <span class="fl">0.4</span><span class="op">)</span></span>
+<span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">23</span>, <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">riskDifferences</span> <span class="op">&lt;-</span> <span class="va">successTreatment</span><span class="op">/</span><span class="fl">38</span> <span class="op">-</span> <span class="va">successControl</span><span class="op">/</span><span class="fl">23</span></span>
+<span><span class="va">reject</span> <span class="op">&lt;-</span> <span class="va">riskDifferences</span> <span class="op">&gt;</span> <span class="va">rejectData</span><span class="op">[</span><span class="fl">607</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">reject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.606107</span></span></code></pre></div>
+<p>Again, the simulated power is almost identical to the theoretical
+power.</p>
+<p>An interesting (yet suspicious) observation is that this power is
+remarkably larger than the one achieved by working with a normal
+approximation, for example the one implemented in the <code>rpact</code>
+package:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">powerRates</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="fl">0.4</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">38</span><span class="op">+</span><span class="fl">23</span>, allocationRatioPlanned <span class="op">=</span> <span class="fl">38</span><span class="op">/</span><span class="fl">23</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">powerRates</span><span class="op">)</span></span></code></pre></div>
+<p><em>Power calculation for a binary endpoint</em></p>
+<p>Fixed sample analysis, one-sided significance level 5%. The results
+were calculated for a two-sample test for rates (normal approximation),
+H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
+0.4, control rate pi(2) = 0.2, number of subjects = 61, planned
+allocation ratio = 1.652.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stage</th>
+<th>Fixed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stage level (one-sided)</td>
+<td>0.0500</td>
+</tr>
+<tr class="even">
+<td>Efficacy boundary (z-value scale)</td>
+<td>1.645</td>
+</tr>
+<tr class="odd">
+<td>Efficacy boundary (t)</td>
+<td>0.204</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>0.4880</td>
+</tr>
+<tr class="odd">
+<td>Number of subjects</td>
+<td>61.0</td>
+</tr>
+</tbody>
+</table>
+<p>Legend:</p>
+<ul>
+<li>
+<em>(t)</em>: treatment effect scale</li>
+</ul>
+<p>Perhaps this stems from an inaccuracy of the normal approximation in
+this case, as especially the control group has a small sample size and
+small event rate.</p>
+<p>We may compare the two tests for different treatment success
+rates:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">piTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span><span class="va">powerERD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">piTreatment</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">piTreatment</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="va">piTreatment</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span>  <span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="va">piTreatment</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                      <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                      probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                      <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">powerERD</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">rejectData</span><span class="op">[</span><span class="fl">608</span>, <span class="fl">3</span><span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">powerRpact</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="va">piTreatment</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">38</span><span class="op">+</span><span class="fl">23</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">38</span><span class="op">/</span><span class="fl">23</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span><span class="op">$</span><span class="va">overallReject</span></span></code></pre></div>
+<p>The above code is time-consuming and thus executed elsewhere. A plot
+visualising the results is shown below:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"img/power_38_23.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="img%2Fpower_38_23.png"><!-- --></p>
+<p>For moderately large effect sizes (treatment success rates approx 0.3
+- 0.6), the exact risk difference test offers a larger power than the
+normal approximation. Although barely visible in the plot, the exact
+risk difference test is slightly more conservative than the normal
+approximation for small effect sizes due to its discrete nature. In
+contrast to the normal approximation, this means that the “true”
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+level of the exact risk difference test depends on the sample sizes and
+may be considerably smaller than the nominal level. For large effect
+sizes (treatment success rates &gt; 0.65), the power difference between
+the two tests becomes negligible.</p>
+</div>
+<div class="section level2">
+<h2 id="arrival-at-larger-sample-sizes">Arrival at larger sample sizes<a class="anchor" aria-label="anchor" href="#arrival-at-larger-sample-sizes"></a>
+</h2>
+<p>When entering the territory of large sample sizes, the normal
+approximation becomes more accurate. Consider a trial with 200 patients
+each in the treatment and control group and event rates of 0.2 under
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
+To compare the performances of the normal approximation and exact risk
+difference test, we can identify the rejection region of the exact risk
+difference test similar to above:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></code></pre></div>
+<p>The exact risk difference test at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.05</annotation></semantics></math>
+proposes the following rejection region:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    reject <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">alpha</span><span class="op">)</span></span>
+<span><span class="co"># Save for later</span></span>
+<span><span class="va">rejectionRegion</span> <span class="op">&lt;-</span> <span class="va">rejectData</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">213</span><span class="op">:</span><span class="fl">217</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability    probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.060              0.9410371 0.07515018      0</span></span>
+<span><span class="co">#&gt; [2,]           0.065              0.9543523 0.05896286      0</span></span>
+<span><span class="co">#&gt; [3,]           0.070              0.9651353 0.04564767      1</span></span>
+<span><span class="co">#&gt; [4,]           0.075              0.9737323 0.03486472      1</span></span>
+<span><span class="co">#&gt; [5,]           0.080              0.9804803 0.02626772      1</span></span></code></pre></div>
+<p>For the given sample sizes, a risk difference of 0.07 or greater
+warrants a rejection of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
+Power calculation for the point alternative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.4</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>
+yields:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.4</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.4</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">213</span><span class="op">:</span><span class="fl">217</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">rejectData</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability      probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.060            0.001106243 9.992400e-01      0</span></span>
+<span><span class="co">#&gt; [2,]           0.065            0.001592008 9.988938e-01      0</span></span>
+<span><span class="co">#&gt; [3,]           0.070            0.002265348 9.984080e-01      1</span></span>
+<span><span class="co">#&gt; [4,]           0.075            0.003187409 9.977347e-01      1</span></span>
+<span><span class="co">#&gt; [5,]           0.080            0.004434782 9.968126e-01      1</span></span>
+<span><span class="co">#&gt; [6,]           1.000            1.000000000 2.220446e-16      1</span></span></code></pre></div>
+<p>Comparing to the normal approximation:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="fl">0.4</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><em>Power calculation for a binary endpoint</em></p>
+<p>Fixed sample analysis, one-sided significance level 5%. The results
+were calculated for a two-sample test for rates (normal approximation),
+H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
+0.4, control rate pi(2) = 0.2, number of subjects = 400.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stage</th>
+<th>Fixed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stage level (one-sided)</td>
+<td>0.0500</td>
+</tr>
+<tr class="even">
+<td>Efficacy boundary (z-value scale)</td>
+<td>1.645</td>
+</tr>
+<tr class="odd">
+<td>Efficacy boundary (t)</td>
+<td>0.070</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>0.9973</td>
+</tr>
+<tr class="odd">
+<td>Number of subjects</td>
+<td>400.0</td>
+</tr>
+</tbody>
+</table>
+<p>Legend:</p>
+<ul>
+<li>
+<em>(t)</em>: treatment effect scale</li>
+</ul>
+<p>Comparing the two tests in this setting, the exact risk difference
+test delivers a marginally larger power, however, this is not relevant
+for any practical purposes. Notably, the efficacy boundary on the
+treatment scale of the <code>rpact</code> output is identical to the one
+proposed by the exact risk difference test.</p>
+<p>Using a slightly smaller alternative effect size of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.3</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.3</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.3</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.3</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">213</span><span class="op">:</span><span class="fl">217</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability   probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.060              0.1915069 0.8385539      0</span></span>
+<span><span class="co">#&gt; [2,]           0.065              0.2247736 0.8084931      0</span></span>
+<span><span class="co">#&gt; [3,]           0.070              0.2610958 0.7752264      1</span></span>
+<span><span class="co">#&gt; [4,]           0.075              0.3002232 0.7389042      1</span></span>
+<span><span class="co">#&gt; [5,]           0.080              0.3418084 0.6997768      1</span></span></code></pre></div>
+<p>Comparing to the normal approximation:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="fl">0.3</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><em>Power calculation for a binary endpoint</em></p>
+<p>Fixed sample analysis, one-sided significance level 5%. The results
+were calculated for a two-sample test for rates (normal approximation),
+H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
+0.3, control rate pi(2) = 0.2, number of subjects = 400.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stage</th>
+<th>Fixed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stage level (one-sided)</td>
+<td>0.0500</td>
+</tr>
+<tr class="even">
+<td>Efficacy boundary (z-value scale)</td>
+<td>1.645</td>
+</tr>
+<tr class="odd">
+<td>Efficacy boundary (t)</td>
+<td>0.070</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>0.7483</td>
+</tr>
+<tr class="odd">
+<td>Number of subjects</td>
+<td>400.0</td>
+</tr>
+</tbody>
+</table>
+<p>Legend:</p>
+<ul>
+<li>
+<em>(t)</em>: treatment effect scale</li>
+</ul>
+<p>In this case, the additional power that the exact risk difference
+provides is already considerable. Moving to an even smaller effect size
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.25</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.25</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.25</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">213</span><span class="op">:</span><span class="fl">217</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability   probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.060              0.6178809 0.4286161      0</span></span>
+<span><span class="co">#&gt; [2,]           0.065              0.6627374 0.3821191      0</span></span>
+<span><span class="co">#&gt; [3,]           0.070              0.7053932 0.3372626      1</span></span>
+<span><span class="co">#&gt; [4,]           0.075              0.7453766 0.2946068      1</span></span>
+<span><span class="co">#&gt; [5,]           0.080              0.7823196 0.2546234      1</span></span></code></pre></div>
+<p>Comparing to the normal approximation:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="fl">0.25</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><em>Power calculation for a binary endpoint</em></p>
+<p>Fixed sample analysis, one-sided significance level 5%. The results
+were calculated for a two-sample test for rates (normal approximation),
+H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
+0.25, control rate pi(2) = 0.2, number of subjects = 400.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stage</th>
+<th>Fixed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stage level (one-sided)</td>
+<td>0.0500</td>
+</tr>
+<tr class="even">
+<td>Efficacy boundary (z-value scale)</td>
+<td>1.645</td>
+</tr>
+<tr class="odd">
+<td>Efficacy boundary (t)</td>
+<td>0.070</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>0.3270</td>
+</tr>
+<tr class="odd">
+<td>Number of subjects</td>
+<td>400.0</td>
+</tr>
+</tbody>
+</table>
+<p>Legend:</p>
+<ul>
+<li>
+<em>(t)</em>: treatment effect scale</li>
+</ul>
+<p>The power difference is now less pronounced, but still favours the
+exact risk difference test.</p>
+<p>Comparing the power of the exact risk difference test and the normal
+approximation for different treatment success rates:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"img/power_200_200.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="img%2Fpower_200_200.png"><!-- --></p>
+<p>We note that for small treatment effect differences that are close to
+or part of the null hypothesis, the exact risk difference offers a
+slightly smaller power than the normal approximation. However, this is
+to be expected, as the normal approximation can always exhaust the full
+alpha level, where as the exact risk difference test is slightly
+overconservative in these cases. For larger effect sizes, the exact risk
+difference test offers a larger power than the normal approximation, but
+these gains in power are fairly small.</p>
+</div>
+<div class="section level2">
+<h2 id="extreme-conditioning---large-and-small-rates">Extreme conditioning - large and small rates<a class="anchor" aria-label="anchor" href="#extreme-conditioning---large-and-small-rates"></a>
+</h2>
+<p>The normal approximation is usually only accurate for moderate
+success rates (unless the sample sizes are extraordinarily large). To
+test the performance of the exact risk difference test under extreme
+conditions, we presume that, for the trial with 200 patients per group,
+the event rate in the control group is now
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.01</annotation></semantics></math>.</p>
+<p>We achieve the rejection region as above:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.01</span>, piControl <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.01</span>, piControl <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="va">cumProbs</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">alpha</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectionRegion</span> <span class="op">&lt;-</span> <span class="va">rejectData</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># rejectData &lt;- cbind(rejectData,</span></span>
+<span>                    <span class="co"># "reachToReject" = c(0, diff(rejectionRegion)),</span></span>
+<span>                    <span class="co"># "exceedToReject" = c(diff(rejectionRegion), 0))</span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">202</span><span class="op">:</span><span class="fl">207</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability     probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.005              0.7831070 0.396166454      0</span></span>
+<span><span class="co">#&gt; [2,]           0.010              0.9008473 0.216892994      0</span></span>
+<span><span class="co">#&gt; [3,]           0.015              0.9617363 0.099152721      0</span></span>
+<span><span class="co">#&gt; [4,]           0.020              0.9873573 0.038263727      1</span></span>
+<span><span class="co">#&gt; [5,]           0.025              0.9963727 0.012642659      1</span></span>
+<span><span class="co">#&gt; [6,]           0.030              0.9990847 0.003627275      1</span></span></code></pre></div>
+<p>Calculating the corresponding power for success rates of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.03</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.03</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.01</annotation></semantics></math>:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.03</span>, piControl <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">200</span>, nControl <span class="op">=</span> <span class="fl">200</span>, piTreatment <span class="op">=</span> <span class="fl">0.03</span>, piControl <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="st">"Risk difference"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"Cumulative probability"</span> <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
+<span>                    probGeq <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">cumProbs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">probs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, </span>
+<span>                    <span class="st">"reject"</span> <span class="op">=</span> <span class="va">rejectionRegion</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rejectData</span><span class="op">[</span><span class="fl">202</span><span class="op">:</span><span class="fl">207</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;      Risk difference Cumulative probability   probGeq reject</span></span>
+<span><span class="co">#&gt; [1,]           0.005              0.1833418 0.9008625      0</span></span>
+<span><span class="co">#&gt; [2,]           0.010              0.2999130 0.8166582      0</span></span>
+<span><span class="co">#&gt; [3,]           0.015              0.4389185 0.7000870      0</span></span>
+<span><span class="co">#&gt; [4,]           0.020              0.5829060 0.5610815      1</span></span>
+<span><span class="co">#&gt; [5,]           0.025              0.7136828 0.4170940      1</span></span>
+<span><span class="co">#&gt; [6,]           0.030              0.8188071 0.2863172      1</span></span></code></pre></div>
+<p>We get a decent power of 0.56 for the exact risk difference test
+despite the small success rates.</p>
+<p>Comparing this to the normal approximation:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span>  pi1 <span class="op">=</span> <span class="fl">0.03</span>, pi2 <span class="op">=</span> <span class="fl">0.01</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
+<span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><em>Power calculation for a binary endpoint</em></p>
+<p>Fixed sample analysis, one-sided significance level 5%. The results
+were calculated for a two-sample test for rates (normal approximation),
+H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
+0.03, control rate pi(2) = 0.01, number of subjects = 400.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stage</th>
+<th>Fixed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Stage level (one-sided)</td>
+<td>0.0500</td>
+</tr>
+<tr class="even">
+<td>Efficacy boundary (z-value scale)</td>
+<td>1.645</td>
+</tr>
+<tr class="odd">
+<td>Efficacy boundary (t)</td>
+<td>0.024</td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td>0.4142</td>
+</tr>
+<tr class="odd">
+<td>Number of subjects</td>
+<td>400.0</td>
+</tr>
+</tbody>
+</table>
+<p>Legend:</p>
+<ul>
+<li>
+<em>(t)</em>: treatment effect scale</li>
+</ul>
+<p>The power improvement gained by the exact risk difference test as
+compared to the normal approximation is substantial. However, the normal
+approximation may not be a solid choice here anyway.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
