@@ -20,9 +20,16 @@ knitr::opts_chunk$set(
 This document provides a brief introduction to discrete risk differences and to the R package `riskdiff`.
 First, load the package:
 
-```{r setup, eval = FALSE}
+```{r setup}
 library(riskdiff)
 ```
+
+For comparison of the presented methodology, the `rpact` package is used.
+
+```{r}
+library(rpact)
+```
+
 
 # Exact risk differences
 
@@ -326,7 +333,7 @@ summary(powerRates)
 Perhaps this stems from an inaccuracy of the normal approximation in this case, as especially the control group has a small sample size and small event rate.
 
 We may compare the two tests for different treatment success rates:
-```{r comparison_2, cache = TRUE, eval = FALSE}
+```{r comparison_2, eval = FALSE}
 piTreatment <- seq(0.1, 0.9, 0.005)
 powerERD <- numeric(length(piTreatment))
 
