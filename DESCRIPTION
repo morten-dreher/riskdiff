@@ -7,11 +7,12 @@ Description: Provides functions for exact distribution of risk differences.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-Imports: ggplot2, rpact
+Imports: ggplot2
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    rpact
 Config/testthat/edition: 3
 VignetteBuilder: knitr
