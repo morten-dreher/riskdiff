@@ -5,7 +5,7 @@
 #' @param piControl Event rate in control group.
 #' @param nTreatment Number of subjects in treatment group.
 #' @param nControl Number of subjects in control group.
-#' @param mustExceed Logical indicating whether the observed risk difference must exceed the critical value for rejection (default \code{TRUE}). IF \code{FALSE}, the observed risk difference must be equal to or greater than the critical value.
+#' @param mustExceed Logical indicating whether the observed risk difference must exceed the critical value for rejection (default \code{TRUE}). If \code{FALSE}, the observed risk difference must be equal to or greater than the critical value.
 #'
 #' @return Critical value.
 #'

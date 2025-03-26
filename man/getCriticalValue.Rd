@@ -24,7 +24,7 @@ getCriticalValue(
 
 \item{nControl}{Number of subjects in control group.}
 
-\item{mustExceed}{Logical indicating whether the observed risk difference must exceed the critical value for rejection (default \code{TRUE}). IF \code{FALSE}, the observed risk difference must be equal to or greater than the critical value.}
+\item{mustExceed}{Logical indicating whether the observed risk difference must exceed the critical value for rejection (default \code{TRUE}). If \code{FALSE}, the observed risk difference must be equal to or greater than the critical value.}
 }
 \value{
 Critical value.
