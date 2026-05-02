@@ -36,9 +36,9 @@ library(rpact)
 Presume that we perform a clinical trial with two groups and a binary endpoint. 
 This means the comparison of the two rates $\pi_t$ of the treatment group and $\pi_c$ of the control group.
 For illustration purposes, let $\pi_t$ and $\pi_c$ simply describe the rates of "treatment success" in the treatment and control group, respectively.
-In other words, the treatment with the higher rate is the favourable one for our example and we could formulate a null hypothesis as $H_0: \pi_t \leq \pi_c$.
+In other words, the treatment with the higher rate is always the favourable one for our examples and we could formulate a null hypothesis as $H_0: \pi_t \leq \pi_c$ when investigating a treatment $t$.
 For large enough sample sizes $n_t$, $n_c$ of treatment and control group, we may use a normal approximation to answer the research question.
-However, for very small sample sizes, the approximation may be inadequate and one may be interested in exact results.
+However, for small sample sizes, the approximation may be inadequate and one may be interested in exact results.
 The `riskdiff` package concerns itself with the (exact) distribution of risk differences and therefore, these will be described in detail here.
 Note that we can rewrite the above null hypothesis as $H_0: \pi_t \leq \pi_c \Leftrightarrow \Delta_\pi:= \pi_t - \pi_c \leq 0$, where $\Delta_\pi$ denotes the risk difference.
 
@@ -200,7 +200,7 @@ mean(reject)
 
 The simulated and theoretical type I error rates are in good agreement.
 
-We will now attempt a power calculation and simulation for the same group sizes, but assuming the event rates $\pi_t = 0.6$ and $\pi_c = 0.3$.
+We will now attempt a power calculation and simulation for the same group sizes as above, but assuming the event rates $\pi_t = 0.6$ and $\pi_c = 0.3$.
 The `priskdiff()` and `driskdiff()` functions from the `riskdiff` facilitate the calculation and `plotriskdiff()` visualises the result:
 
 ```{r plot_priskdiff_power, fig.dim = c(8,5)}
@@ -274,7 +274,7 @@ rejectData[605:610, ]
 For this setting, we may reject risk differences of 0.1693 or greater at a level of $\alpha = 0.05$.
 The true type I error rate of this test is $0.0493$, which is much closer to the nominal level $\alpha = 0.05$.
 
-We may again simulate the type I error rate of this trial:
+We may again simulate the type I error rate of this trial scenario:
 
 ```{r, simulation_tIe_2}
 successTreatment <- rbinom(nSims, 38, 0.2)
@@ -472,7 +472,7 @@ knitr::include_graphics("img/power_200_200.png")
 
 
 We note that for small treatment effect differences that are close to or part of the null hypothesis, the exact risk difference offers a slightly smaller power than the normal approximation.
-However, this is to be expected, as the normal approximation can always exhaust the full alpha level, where as the exact risk difference test is slightly overconservative in these cases.
+However, this is to be expected, as the normal approximation can always exhaust the full alpha level, whereas the exact risk difference test is slightly overconservative in these cases.
 For larger effect sizes, the exact risk difference test offers a larger power than the normal approximation, but these gains in power are fairly small.
 
 # Extreme conditioning - large and small rates
@@ -526,3 +526,11 @@ rpact::getPowerRates(
 
 The power improvement gained by the exact risk difference test as compared to the normal approximation is substantial.
 However, the normal approximation may not be a solid choice here anyway.
+
+# Computational remarks
+
+The calculation of all possible risk differences for two given group sizes $n_t$ and $n_c$ is straightforward and can be achieved by simply looping through the group sizes.
+For each $i \in \{0, \ldots, n_t\}$ and $j \in \{0, \ldots, n_c\}$, the risk difference $\Delta_{\pi, i, j} = i/n_t - j/n_c$ can then be calculated.
+Equivalently, $\Delta_{\pi, i, j} = (i \cdot n_c - j \cdot n_t)/(n_t \cdot n_c)$ can be used to avoid possible floating point inaccuracies.
+Since the same risk difference may occur for different combinations of $i$ and $j$ and their probabilities must be aggregated, this is the preferred way of calculating the risk differences.
+This second representation always leads to a rational number and may also be preferable for manual computations.
