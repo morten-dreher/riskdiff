@@ -75,7 +75,7 @@ package:</p>
 package is used.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rpact.org" class="external-link">rpact</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Installation qualification for rpact 4.2.0 has not yet been performed.</span></span>
+<span><span class="co">#&gt; Installation qualification for rpact 4.4.0 has not yet been performed.</span></span>
 <span><span class="co">#&gt; Please run testPackage() before using the package in GxP relevant environments.</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -92,22 +92,24 @@ and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>π</mi><mi>c</mi></msub><annotation encoding="application/x-tex">\pi_c</annotation></semantics></math>
 simply describe the rates of “treatment success” in the treatment and
 control group, respectively. In other words, the treatment with the
-higher rate is the favourable one for our example and we could formulate
-a null hypothesis as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>π</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>π</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">H_0: \pi_t \leq \pi_c</annotation></semantics></math>.
+higher rate is always the favourable one for our examples and we could
+formulate a null hypothesis as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>π</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>π</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">H_0: \pi_t \leq \pi_c</annotation></semantics></math>
+when investigating a treatment
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
 For large enough sample sizes
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>t</mi></msub><annotation encoding="application/x-tex">n_t</annotation></semantics></math>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>c</mi></msub><annotation encoding="application/x-tex">n_c</annotation></semantics></math>
 of treatment and control group, we may use a normal approximation to
-answer the research question. However, for very small sample sizes, the
+answer the research question. However, for small sample sizes, the
 approximation may be inadequate and one may be interested in exact
 results. The <code>riskdiff</code> package concerns itself with the
 (exact) distribution of risk differences and therefore, these will be
 described in detail here. Note that we can rewrite the above null
 hypothesis as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>π</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>π</mi><mi>c</mi></msub><mo>⇔</mo><msub><mi>Δ</mi><mi>π</mi></msub><mo>:=</mo><msub><mi>π</mi><mi>t</mi></msub><mo>−</mo><msub><mi>π</mi><mi>c</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \pi_t \leq \pi_c \Leftrightarrow \Delta_\pi:= \pi_t - \pi_c \leq 0</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>π</mi><mi>t</mi></msub><mo>≤</mo><msub><mi>π</mi><mi>c</mi></msub><mo>⇔</mo><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><mo>:=</mo><msub><mi>π</mi><mi>t</mi></msub><mo>−</mo><msub><mi>π</mi><mi>c</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \pi_t \leq \pi_c \Leftrightarrow \Delta_\pi:= \pi_t - \pi_c \leq 0</annotation></semantics></math>,
 where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>
 denotes the risk difference.</p>
 <p>While the risk difference is to be thought of as a real-valued number
 between 1 and -1, since it is simply defined by subtracting two rates,
@@ -123,9 +125,9 @@ successes in each group using binomially distributed random variables
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mi>t</mi><mo>,</mo><mi>c</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">i\in\{t,c\}</annotation></semantics></math>
 denotes the respective group. Thus,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>t</mi></msub><mo>∼</mo><mi>B</mi><mi>i</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo>,</mo><msub><mi>π</mi><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">X_t \sim Bin(4, \pi_t)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>t</mi></msub><mo>∼</mo><mi>B</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mn>4</mn><mo>,</mo><msub><mi>π</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">X_t \sim Bin(4, \pi_t)</annotation></semantics></math>
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>c</mi></msub><mo>∼</mo><mi>B</mi><mi>i</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>,</mo><msub><mi>π</mi><mi>c</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">X_c\sim Bin(3, \pi_c)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>c</mi></msub><mo>∼</mo><mi>B</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mo>,</mo><msub><mi>π</mi><mi>c</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">X_c\sim Bin(3, \pi_c)</annotation></semantics></math>
 describe the number of successes in the treatment and control group,
 respectively.</p>
 <p>In both groups, the number of successes which we can observe is
@@ -206,7 +208,7 @@ the calculation of the probabilities is straightforward. For example,
 the probability of the observed risk difference being 12/12 is simply
 the probability of observing 4 successes in the treatment group times
 the probability of observing 0 successes in the control group:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Δ</mi><mi>π</mi></msub><mo>=</mo><mn>12</mn><mi>/</mi><mn>12</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>t</mi></msub><mo>=</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mi>c</mi></msub><mo>=</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>4</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mn>0.6</mn><mn>4</mn></msup><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>3</mn><mn>0</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>0.3</mn><mo stretchy="true" form="postfix">)</mo></mrow><mn>3</mn></msup><mo>=</mo><mn>0.0445</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><mo>=</mo><mn>12</mn><mi>/</mi><mn>12</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>t</mi></msub><mo>=</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo><mo>⋅</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>X</mi><mi>c</mi></msub><mo>=</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>4</mn><mn>4</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msup><mn>0.6</mn><mn>4</mn></msup><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>3</mn><mn>0</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>0.3</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>3</mn></msup><mo>=</mo><mn>0.0445</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
 P(\Delta_\pi = 12/12) = P(X_t=4) \cdot P(X_c=0) = \binom{4}{4}0.6^4\cdot \binom{3}{0}(1-0.3)^3 = 0.0445.
 </annotation></semantics></math></p>
 <p>Completing the table yields the probabilities:</p>
@@ -258,7 +260,7 @@ P(\Delta_\pi = 12/12) = P(X_t=4) \cdot P(X_c=0) = \binom{4}{4}0.6^4\cdot \binom{
 null hypothesis, e.g. for equal success rates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.3</mn></mrow><annotation encoding="application/x-tex">\pi_t = \pi_c = 0.3</annotation></semantics></math>,
 equating to a risk difference
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Δ</mi><mi>π</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Delta_\pi=0</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Delta_\pi=0</annotation></semantics></math>.</p>
 <p>This yields the probability table:</p>
 <table class="table">
 <thead><tr class="header">
@@ -321,7 +323,7 @@ of the investigated hypothesis from two dimensions
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>π</mi><mi>c</mi></msub><annotation encoding="application/x-tex">\pi_c</annotation></semantics></math>)
 to one dimension
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>).</p>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><annotation encoding="application/x-tex">\Delta_\pi</annotation></semantics></math>).</p>
 <table class="table">
 <thead><tr class="header">
 <th>Risk difference</th>
@@ -437,7 +439,7 @@ yields an interesting picture:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">probs</span>, xlab <span class="op">=</span> <span class="st">"Risk difference"</span>, ylab <span class="op">=</span> <span class="st">"Probability"</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Risk difference distribution under H0"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">rds</span>, <span class="va">probs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/plot_driskdiffs-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_driskdiffs-1.png" class="r-plt" alt="" width="768"></p>
 <p>Clearly, the distribution of the risk difference is not symmetric
 around 0 under
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
@@ -468,7 +470,7 @@ by simply using the cumulative sum of the probabilities:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">cumProbs</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0.95</span>, col <span class="op">=</span> <span class="st">"blue"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/plot_priskdiffs-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiffs-1.png" class="r-plt" alt="" width="768"></p>
 <p>As illustrated by the red lines, the risk difference 0 clearly does
 not constitute the centre of the distribution, as the probability to
 observe a risk difference of at most 0 exceeds 0.5, which would be
@@ -549,7 +551,7 @@ given its discrete nature.</p>
 <p>The simulated and theoretical type I error rates are in good
 agreement.</p>
 <p>We will now attempt a power calculation and simulation for the same
-group sizes, but assuming the event rates
+group sizes as above, but assuming the event rates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>t</mi></msub><mo>=</mo><mn>0.6</mn></mrow><annotation encoding="application/x-tex">\pi_t = 0.6</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.3</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.3</annotation></semantics></math>.
@@ -581,7 +583,7 @@ the <code>riskdiff</code> facilitate the calculation and
 <span><span class="co">#&gt; 18      0.75000000              0.9555472</span></span>
 <span><span class="co">#&gt; 19      1.00000000              1.0000000</span></span>
 <span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">cumProbs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/plot_priskdiff_power-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiff_power-1.png" class="r-plt" alt="" width="768"></p>
 <p>From above, we learned that our test rejects for risk differences of
 0.66 or greater (or identically for risk differences truly greater than
 0.5). We will generally use the “truly greater than” rejection rule
@@ -645,7 +647,7 @@ lower the statistical power, but may not be uncommon in rare diseases in
 order to improve recruitment. We will assume a control rate of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>π</mi><mi>c</mi></msub><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\pi_c = 0.2</annotation></semantics></math>
 and use the null hypothesis
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>Δ</mi><mi>π</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \Delta_\pi \leq 0</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi mathvariant="normal">Δ</mi><mi>π</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \Delta_\pi \leq 0</annotation></semantics></math>.</p>
 <p>Calculating the distribution of the risk difference under
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
 is more computationally challenging now, since there are far more
@@ -653,12 +655,12 @@ possible risk differences:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/driskdiff.html">driskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">probs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/plot_priskdiff_2-1.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiff_2-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">cumProbs</span> <span class="op">&lt;-</span> <span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/priskdiff.html">priskdiff</a></span><span class="op">(</span>nTreatment <span class="op">=</span> <span class="fl">38</span>, nControl <span class="op">=</span> <span class="fl">23</span>, piTreatment <span class="op">=</span> <span class="fl">0.2</span>, piControl <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="fu">riskdiff</span><span class="fu">::</span><span class="fu"><a href="../reference/plotriskdiff.html">plotriskdiff</a></span><span class="op">(</span><span class="va">cumProbs</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/plot_priskdiff_2-2.png" width="768"></p>
+<p><img src="introduction_files/figure-html/plot_priskdiff_2-2.png" class="r-plt" alt="" width="768"></p>
 <p>The risk difference plots are now messier, but hint at a roughly
 symmetric distribution around 0. Formulating a statistical test can be
 done in the same manner as before:</p>
@@ -684,7 +686,8 @@ The true type I error rate of this test is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0.0493</mn><annotation encoding="application/x-tex">0.0493</annotation></semantics></math>,
 which is much closer to the nominal level
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.05</annotation></semantics></math>.</p>
-<p>We may again simulate the type I error rate of this trial:</p>
+<p>We may again simulate the type I error rate of this trial
+scenario:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">successTreatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">38</span>, <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">successControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">nSims</span>, <span class="fl">23</span>, <span class="fl">0.2</span><span class="op">)</span></span>
@@ -736,7 +739,7 @@ remarkably larger than the one achieved by working with a normal
 approximation, for example the one implemented in the <code>rpact</code>
 package:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">powerRates</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">powerRates</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="fl">0.4</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">38</span><span class="op">+</span><span class="fl">23</span>, allocationRatioPlanned <span class="op">=</span> <span class="fl">38</span><span class="op">/</span><span class="fl">23</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span></span>
@@ -802,7 +805,7 @@ rates:</p>
 <span>  <span class="va">powerERD</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">rejectData</span><span class="op">[</span><span class="fl">608</span>, <span class="fl">3</span><span class="op">]</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">powerRpact</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<span><span class="va">powerRpact</span> <span class="op">&lt;-</span> <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="va">piTreatment</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">38</span><span class="op">+</span><span class="fl">23</span>, </span>
 <span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">38</span><span class="op">/</span><span class="fl">23</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span><span class="op">$</span><span class="va">overallReject</span></span></code></pre></div>
@@ -810,7 +813,7 @@ rates:</p>
 visualising the results is shown below:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"img/power_38_23.png"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="img%2Fpower_38_23.png"><!-- --></p>
+<p><img src="img/power_38_23.png"><!-- --></p>
 <p>For moderately large effect sizes (treatment success rates approx 0.3
 - 0.6), the exact risk difference test offers a larger power than the
 normal approximation. Although barely visible in the plot, the exact
@@ -877,10 +880,10 @@ yields:</p>
 <span><span class="co">#&gt; [3,]           0.070            0.002265348 9.984080e-01      1</span></span>
 <span><span class="co">#&gt; [4,]           0.075            0.003187409 9.977347e-01      1</span></span>
 <span><span class="co">#&gt; [5,]           0.080            0.004434782 9.968126e-01      1</span></span>
-<span><span class="co">#&gt; [6,]           1.000            1.000000000 2.220446e-16      1</span></span></code></pre></div>
+<span><span class="co">#&gt; [6,]           1.000            1.000000000 1.110223e-16      1</span></span></code></pre></div>
 <p>Comparing to the normal approximation:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="fl">0.4</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
 <span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -948,7 +951,7 @@ and
 <span><span class="co">#&gt; [5,]           0.080              0.3418084 0.6997768      1</span></span></code></pre></div>
 <p>Comparing to the normal approximation:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="fl">0.3</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
 <span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1014,7 +1017,7 @@ and
 <span><span class="co">#&gt; [5,]           0.080              0.7823196 0.2546234      1</span></span></code></pre></div>
 <p>Comparing to the normal approximation:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="fl">0.25</span>, pi2 <span class="op">=</span> <span class="fl">0.2</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
 <span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1062,12 +1065,12 @@ exact risk difference test.</p>
 approximation for different treatment success rates:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"img/power_200_200.png"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="img%2Fpower_200_200.png"><!-- --></p>
+<p><img src="img/power_200_200.png"><!-- --></p>
 <p>We note that for small treatment effect differences that are close to
 or part of the null hypothesis, the exact risk difference offers a
 slightly smaller power than the normal approximation. However, this is
 to be expected, as the normal approximation can always exhaust the full
-alpha level, where as the exact risk difference test is slightly
+alpha level, whereas the exact risk difference test is slightly
 overconservative in these cases. For larger effect sizes, the exact risk
 difference test offers a larger power than the normal approximation, but
 these gains in power are fairly small.</p>
@@ -1129,7 +1132,7 @@ and
 despite the small success rates.</p>
 <p>Comparing this to the normal approximation:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://docs.rpact.org/reference/getPowerRates.html" class="external-link">getPowerRates</a></span><span class="op">(</span></span>
 <span>  pi1 <span class="op">=</span> <span class="fl">0.03</span>, pi2 <span class="op">=</span> <span class="fl">0.01</span>, maxNumberOfSubjects <span class="op">=</span> <span class="fl">200</span><span class="op">+</span><span class="fl">200</span>, </span>
 <span>  allocationRatioPlanned <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1175,6 +1178,33 @@ H0: pi(1) - pi(2) = 0, power directed towards larger values, H1: pi(1) =
 compared to the normal approximation is substantial. However, the normal
 approximation may not be a solid choice here anyway.</p>
 </div>
+<div class="section level2">
+<h2 id="computational-remarks">Computational remarks<a class="anchor" aria-label="anchor" href="#computational-remarks"></a>
+</h2>
+<p>The calculation of all possible risk differences for two given group
+sizes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>t</mi></msub><annotation encoding="application/x-tex">n_t</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>c</mi></msub><annotation encoding="application/x-tex">n_c</annotation></semantics></math>
+is straightforward and can be achieved by simply looping through the
+group sizes. For each
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>n</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">i \in \{0, \ldots, n_t\}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>n</mi><mi>c</mi></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">j \in \{0, \ldots, n_c\}</annotation></semantics></math>,
+the risk difference
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mrow><mi>π</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mi>i</mi><mi>/</mi><msub><mi>n</mi><mi>t</mi></msub><mo>−</mo><mi>j</mi><mi>/</mi><msub><mi>n</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\Delta_{\pi, i, j} = i/n_t - j/n_c</annotation></semantics></math>
+can then be calculated. Equivalently,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Δ</mi><mrow><mi>π</mi><mo>,</mo><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>⋅</mo><msub><mi>n</mi><mi>c</mi></msub><mo>−</mo><mi>j</mi><mo>⋅</mo><msub><mi>n</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>t</mi></msub><mo>⋅</mo><msub><mi>n</mi><mi>c</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Delta_{\pi, i, j} = (i \cdot n_c - j \cdot n_t)/(n_t \cdot n_c)</annotation></semantics></math>
+can be used to avoid possible floating point inaccuracies. Since the
+same risk difference may occur for different combinations of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+and their probabilities must be aggregated, this is the preferred way of
+calculating the risk differences. This second representation always
+leads to a rational number and may also be preferable for manual
+computations.</p>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -1186,7 +1216,7 @@ approximation may not be a solid choice here anyway.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
